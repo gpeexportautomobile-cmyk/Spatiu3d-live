@@ -1,0 +1,185 @@
+{
+  "bundleId" : "com.lucian.spatiu3d",
+  "displayName" : "Spațiu 3D",
+  "name" : "Spatiu 3D",
+  "onLoad" : "motion.start(function(d){ if(!state.autoRotate) { state.rotY = d.roll * 0.05; state.rotX = d.pitch * 0.05; } }, 30);",
+  "persist" : [
+    "autoRotate",
+    "shape",
+    "zoom"
+  ],
+  "screens" : [
+    {
+      "background" : "#0B0B16",
+      "body" : {
+        "align" : "center",
+        "children" : [
+          {
+            "color" : "#00F0FF",
+            "size" : 14,
+            "text" : "Obiect: {{shape.toUpperCase()}}",
+            "type" : "text",
+            "weight" : "bold"
+          },
+          {
+            "background" : "#1A1A3A",
+            "borderColor" : "#00F0FF",
+            "borderWidth" : 2,
+            "children" : [
+              {
+                "background" : "#00F0FF",
+                "borderColor" : "#FFFFFF",
+                "borderWidth" : 3,
+                "height" : "80 * zoom",
+                "onDrag" : "state.rotY += dx * 0.01; state.rotX += dy * 0.01;",
+                "radius" : 16,
+                "text" : "3D",
+                "type" : "box",
+                "width" : "80 * zoom",
+                "x" : "180 + (Math.sin(now() * 0.001 * (autoRotate ? 1 : 0) + rotY) * 90) - 40",
+                "y" : "180 + (Math.cos(now() * 0.001 * (autoRotate ? 1 : 0) + rotX) * 90) - 40"
+              },
+              {
+                "background" : "#FF007F",
+                "borderColor" : "#FFFFFF",
+                "borderWidth" : 2,
+                "height" : "50 * zoom",
+                "onDrag" : "state.rotY += dx * 0.01; state.rotX += dy * 0.01;",
+                "radius" : 12,
+                "type" : "box",
+                "width" : "50 * zoom",
+                "x" : "180 - (Math.sin(now() * 0.001 * (autoRotate ? 1 : 0) + rotY) * 110) - 25",
+                "y" : "180 - (Math.cos(now() * 0.001 * (autoRotate ? 1 : 0) + rotX) * 110) - 25"
+              }
+            ],
+            "height" : 360,
+            "id" : "spaceCanvas",
+            "radius" : 20,
+            "type" : "canvas"
+          },
+          {
+            "align" : "center",
+            "children" : [
+              {
+                "onTap" : "setShape('cube')",
+                "style" : "{{ shape == 'cube' ? 'filled' : 'tinted' }}",
+                "title" : "Cubic",
+                "type" : "button"
+              },
+              {
+                "onTap" : "setShape('pyramid')",
+                "style" : "{{ shape == 'pyramid' ? 'filled' : 'tinted' }}",
+                "title" : "Piramidă",
+                "type" : "button"
+              },
+              {
+                "onTap" : "setShape('sphere')",
+                "style" : "{{ shape == 'sphere' ? 'filled' : 'tinted' }}",
+                "title" : "Sferă",
+                "type" : "button"
+              }
+            ],
+            "spacing" : 12,
+            "type" : "hstack"
+          },
+          {
+            "align" : "center",
+            "children" : [
+              {
+                "onTap" : "toggleAuto()",
+                "sf" : "{{ autoRotate ? 'pause.fill' : 'play.fill' }}",
+                "style" : "tinted",
+                "title" : " {{ autoRotate ? 'Oprește Rotația' : 'Pornește Rotația' }}",
+                "type" : "button"
+              }
+            ],
+            "padding" : [
+              8,
+              16
+            ],
+            "spacing" : 20,
+            "type" : "hstack"
+          },
+          {
+            "bind" : "zoom",
+            "label" : "Zoom",
+            "max" : 2.5,
+            "min" : 0.5,
+            "type" : "slider"
+          }
+        ],
+        "padding" : 16,
+        "spacing" : 16,
+        "type" : "vstack",
+        "valign" : "center"
+      },
+      "hideNav" : false,
+      "id" : "home",
+      "navButtons" : [
+        {
+          "action" : "go('settings')",
+          "sf" : "gearshape"
+        }
+      ],
+      "title" : "Vizualizator 3D"
+    },
+    {
+      "background" : "#0B0B16",
+      "body" : {
+        "align" : "leading",
+        "children" : [
+          {
+            "size" : 22,
+            "text" : "Configurare Spațiu",
+            "type" : "text",
+            "weight" : "bold"
+          },
+          {
+            "bind" : "autoRotate",
+            "label" : "Rotație automată",
+            "type" : "toggle"
+          },
+          {
+            "color" : "#8888AA",
+            "size" : 14,
+            "text" : "Trage cu degetul pe ecranul 3D pentru a roti manual obiectele sau folosește senzorii telefonului când rotația automată este oprită.",
+            "type" : "text"
+          },
+          {
+            "type" : "spacer"
+          },
+          {
+            "onTap" : "back()",
+            "style" : "filled",
+            "title" : "Înapoi",
+            "type" : "button",
+            "width" : "fill"
+          }
+        ],
+        "padding" : 20,
+        "spacing" : 20,
+        "type" : "vstack",
+        "valign" : "start"
+      },
+      "id" : "settings",
+      "title" : "Setări 3D"
+    }
+  ],
+  "script" : "function toggleAuto(){ state.autoRotate = !state.autoRotate; haptic('light'); }\nfunction setShape(s){ state.shape = s; haptic('medium'); }",
+  "start" : "home",
+  "state" : {
+    "autoRotate" : true,
+    "rotX" : 0.29999999999999999,
+    "rotY" : 0.20000000000000001,
+    "shape" : "cube",
+    "zoom" : 1.5
+  },
+  "theme" : {
+    "background" : "#0B0B16",
+    "dark" : true,
+    "font" : "rounded",
+    "text" : "#FFFFFF",
+    "tint" : "#00F0FF"
+  },
+  "version" : "1.0"
+}
